@@ -23,7 +23,12 @@ app = FastAPI(
 # ==========================================
 # FIREBASE
 # ==========================================
+private_key = os.getenv("FIREBASE_PRIVATE_KEY")
 
+if not private_key:
+    raise ValueError(
+        "FIREBASE_PRIVATE_KEY environment variable not set"
+    )
 
 firebase_config = {
     "type": "service_account",
