@@ -13,6 +13,14 @@ from firebase_admin import credentials, firestore
 print("PROJECT:", os.getenv("FIREBASE_PROJECT_ID"))
 print("EMAIL:", os.getenv("FIREBASE_CLIENT_EMAIL"))
 
+
+# ==========================================
+# FASTAPI
+# ==========================================
+
+app = FastAPI(
+    title="Success Point PDF Ingestion API"
+)
 @app.get("/")
 def home():
     return {
@@ -25,14 +33,6 @@ def health():
     return {
         "status": "healthy"
     }
-# ==========================================
-# FASTAPI
-# ==========================================
-
-app = FastAPI(
-    title="Success Point PDF Ingestion API"
-)
-
 # ==========================================
 # FIREBASE
 # ==========================================
