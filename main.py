@@ -12,6 +12,19 @@ from firebase_admin import credentials, firestore
 
 print("PROJECT:", os.getenv("FIREBASE_PROJECT_ID"))
 print("EMAIL:", os.getenv("FIREBASE_CLIENT_EMAIL"))
+
+@app.get("/")
+def home():
+    return {
+        "status": "running",
+        "message": "Success Point Backend Live"
+    }
+
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy"
+    }
 # ==========================================
 # FASTAPI
 # ==========================================
