@@ -1,0 +1,14 @@
+firebase_key.json
+
+__pycache__/
+*.pyc
+
+uploads/
+extracted_images/
+
+.env
+.venv/
+venv/
+
+.idea/
+.vscode/
