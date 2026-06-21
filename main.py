@@ -34,12 +34,12 @@ def health():
         "status": "healthy"
     }
     @app.get("/stats")
-def stats():
+    def stats():
 
-    books = len(list(db.collection("books").stream()))
-    chapters = len(list(db.collection("chapters").stream()))
-    chunks = len(list(db.collection("chapter_chunks").stream()))
-    images = len(list(db.collection("images").stream()))
+        books = len(list(db.collection("books").stream()))
+        chapters = len(list(db.collection("chapters").stream()))
+        chunks = len(list(db.collection("chapter_chunks").stream()))
+        images = len(list(db.collection("images").stream()))
 
     return {
         "books": books,
@@ -246,7 +246,7 @@ async def ingest_book(
                         f"NEW CHAPTER: "
                         f"{current_chapter}"
                     )
-
+                    print("INGESTION COMPLETE")
             # ------------------------------
             # FULL PAGE IMAGE
             # ------------------------------
@@ -409,7 +409,7 @@ async def ingest_book(
             "status": "error",
             "message": str(e)
         }
-                print("INGESTION COMPLETE")
+                
 
 def get_chapters(book_id):
 
