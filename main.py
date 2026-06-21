@@ -537,3 +537,14 @@ def get_images(chapter_id):
         doc.to_dict()
         for doc in docs
     ]
+@app.get("/books")
+def get_books():
+
+    docs = db.collection("books").stream()
+
+    result = []
+
+    for doc in docs:
+        result.append(doc.to_dict())
+
+    return result
