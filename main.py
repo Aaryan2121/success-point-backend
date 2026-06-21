@@ -33,20 +33,7 @@ def health():
     return {
         "status": "healthy"
     }
-    @app.get("/stats")
-    def stats():
-
-        books = len(list(db.collection("books").stream()))
-        chapters = len(list(db.collection("chapters").stream()))
-        chunks = len(list(db.collection("chapter_chunks").stream()))
-        images = len(list(db.collection("images").stream()))
-
-    return {
-        "books": books,
-        "chapters": chapters,
-        "chunks": chunks,
-        "images": images
-    }
+    
 # ==========================================
 # FIREBASE
 # ==========================================
@@ -548,3 +535,18 @@ def get_books():
         result.append(doc.to_dict())
 
     return result
+
+@app.get("/stats")
+def stats():
+
+    books = len(list(db.collection("books").stream()))
+    chapters = len(list(db.collection("chapters").stream()))
+    chunks = len(list(db.collection("chapter_chunks").stream()))
+    images = len(list(db.collection("images").stream()))
+
+    return {
+        "books": books,
+        "chapters": chapters,
+        "chunks": chunks,
+        "images": images
+    }
