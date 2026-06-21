@@ -33,6 +33,20 @@ def health():
     return {
         "status": "healthy"
     }
+    @app.get("/stats")
+def stats():
+
+    books = len(list(db.collection("books").stream()))
+    chapters = len(list(db.collection("chapters").stream()))
+    chunks = len(list(db.collection("chapter_chunks").stream()))
+    images = len(list(db.collection("images").stream()))
+
+    return {
+        "books": books,
+        "chapters": chapters,
+        "chunks": chunks,
+        "images": images
+    }
 # ==========================================
 # FIREBASE
 # ==========================================
@@ -382,7 +396,6 @@ async def ingest_book(
                             firestore.SERVER_TIMESTAMP
                     })
 
-                print("INGESTION COMPLETE")
 
         return {
             "status": "success",
@@ -396,7 +409,7 @@ async def ingest_book(
             "status": "error",
             "message": str(e)
         }
-
+                print("INGESTION COMPLETE")
 
 def get_chapters(book_id):
 
