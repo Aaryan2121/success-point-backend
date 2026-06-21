@@ -550,3 +550,19 @@ def stats():
         "chunks": chunks,
         "images": images
     }
+
+@app.get("/chapters/{book_id}")
+def get_chapters(book_id):
+
+    docs = (
+        db.collection("chapters")
+        .where("bookId", "==", book_id)
+        .stream()
+    )
+
+    result = []
+
+    for doc in docs:
+        result.append(doc.to_dict())
+
+    return result
