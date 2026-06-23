@@ -566,3 +566,31 @@ def get_chapters(book_id):
         result.append(doc.to_dict())
 
     return result
+
+@app.get("/chunks/{chapter_id}")
+def get_chunks(chapter_id: str):
+
+    chunks = []
+
+    docs = (
+        db.collection("chapter_chunks")
+        .where("chapterId", "==", chapter_id)
+        .stream()
+    )
+
+    for doc in docs:
+        data = doc.to_dict()
+
+        chunks.append({
+            "chunkId": doc.id,
+            "chunkIndex": data.get("chunkIndex"),
+            "pageNumber": data.get("pageNumber"),
+            "text": data.get("text"),
+            "imageUrls": data.get("imageUrls", [])
+        })
+
+    chunks.sort(
+        key=lambda x: x.get("chunkIndex", 0)
+    )
+
+    return chunks
