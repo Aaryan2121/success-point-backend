@@ -534,30 +534,36 @@ def get_images(chapter_id):
     ]
 from typing import Optional
 
+from fastapi import Query
+
 @app.get("/books")
 def get_books(
-    class_name: Optional[str] = None,
-    subject: Optional[str] = None,
+    class_name: str = Query(None),
+    subject: str = Query(None),
 ):
 
-    docs = db.collection("books").stream()
+    query = db.collection("books")
+
+    if class_name:
+        query = query.where(
+            "class",
+            "==",
+            class_name,
+        )
+
+    if subject:
+        query = query.where(
+            "subject",
+            "==",
+            subject,
+        )
+
+    docs = query.stream()
 
     result = []
 
     for doc in docs:
-        book = doc.to_dict()
-
-        # Filter by class if provided
-        if class_name is not None:
-            if str(book.get("class", "")) != str(class_name):
-                continue
-
-        # Filter by subject if provided
-        if subject is not None:
-            if book.get("subject") != subject:
-                continue
-
-        result.append(book)
+        result.append(doc.to_dict())
 
     return result
 
