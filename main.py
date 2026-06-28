@@ -139,9 +139,14 @@ print("===================================")
 # INGEST BOOK
 # ==========================================
 
+from fastapi import Form
+
 @app.post("/ingest-book")
 async def ingest_book(
-    pdf: UploadFile = File(...)
+    pdf: UploadFile = File(...),
+    class_name: str = Form(...),
+    subject: str = Form(...),
+    board: str = Form(...),
 ):
 
     try:
@@ -173,6 +178,9 @@ async def ingest_book(
         ).set({
             "bookId": book_id,
             "bookName": pdf.filename,
+            "class": class_name,
+            "subject": subject,
+            "board": board,
             "totalPages": len(doc),
             "createdAt":
                 firestore.SERVER_TIMESTAMP
@@ -524,15 +532,32 @@ def get_images(chapter_id):
         doc.to_dict()
         for doc in docs
     ]
+from typing import Optional
+
 @app.get("/books")
-def get_books():
+def get_books(
+    class_name: Optional[str] = None,
+    subject: Optional[str] = None,
+):
 
     docs = db.collection("books").stream()
 
     result = []
 
     for doc in docs:
-        result.append(doc.to_dict())
+        book = doc.to_dict()
+
+        # Filter by class if provided
+        if class_name is not None:
+            if str(book.get("class", "")) != str(class_name):
+                continue
+
+        # Filter by subject if provided
+        if subject is not None:
+            if book.get("subject") != subject:
+                continue
+
+        result.append(book)
 
     return result
 
