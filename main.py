@@ -79,13 +79,32 @@ def detect_chapter(line):
         return False
 
     patterns = [
-    r"^Chapter\s+\d+$",
-    r"^\d+\.\d+\s+[A-Z][A-Za-z\s\-\(\)]{3,}$",
-    r"^\d+\.\d+\.\d+\s+[A-Z][A-Za-z\s\-\(\)]{3,}$",
-]
+
+        # Chapter 1
+        r"^Chapter\s+\d+",
+
+        # 1. Sets
+        r"^\d+\.\s+[A-Za-z].{2,}$",
+
+        # 1 Sets
+        r"^\d+\s+[A-Za-z].{2,}$",
+
+        # 19.2 Aquatic ecosystem
+        r"^\d+\.\d+\s+[A-Za-z].{2,}$",
+
+        # 19.2.1 Something
+        r"^\d+\.\d+\.\d+\s+[A-Za-z].{2,}$",
+
+        # Exercise 1.1
+        r"^Exercise\s+\d+(\.\d+)?",
+
+        # Unit 1
+        r"^Unit\s+\d+",
+
+    ]
 
     for pattern in patterns:
-        if re.match(pattern, line):
+        if re.match(pattern, line, re.IGNORECASE):
             return True
 
     return False
@@ -237,11 +256,12 @@ async def ingest_book(
                             firestore.SERVER_TIMESTAMP
                     })
 
+                    print(f"LINE: {line}")
                     print(
                         f"NEW CHAPTER: "
                         f"{current_chapter}"
                     )
-                    print("INGESTION COMPLETE")
+                    
             # ------------------------------
             # FULL PAGE IMAGE
             # ------------------------------
@@ -391,7 +411,7 @@ async def ingest_book(
                             firestore.SERVER_TIMESTAMP
                     })
 
-
+        print("INGESTION COMPLETE")
         return {
             "status": "success",
             "bookId": book_id,
@@ -541,6 +561,8 @@ def get_books(
     class_name: str = Query(None),
     subject: str = Query(None),
 ):
+    print("CLASS:", class_name)
+    print("SUBJECT:", subject)
 
     query = db.collection("books")
 
