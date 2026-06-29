@@ -229,10 +229,31 @@ async def ingest_book(
 
             text = page.get_text()
 
+        if "CONTENTS" in text.upper():
+
+            print("\n========== CONTENTS PAGE FOUND ==========\n")
+
+            chapter_pattern = (
+                r"(\d+)\.\s+"
+                r"(.+?)"
+                r"\s+(\d+)\s+to\s+(\d+)"
+            )
+
+            matches = re.findall(
+                chapter_pattern,
+                text
+            )
+
+            print("MATCHES FOUND:")
+
+            for match in matches:
+                print(match)
+
+            print("\n========================================\n")
+
             # ------------------------------
             # CHAPTER DETECTION
             # ------------------------------
-
             for line in text.split("\n"):
 
                 if detect_chapter(line):
