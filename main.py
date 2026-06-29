@@ -1,5 +1,6 @@
 
 import os
+from pydoc import text
 import re
 import uuid
 import traceback
@@ -229,8 +230,11 @@ async def ingest_book(
 
             text = page.get_text()
 
-        if "CONTENTS" in text.upper():
-
+            print("\n--------------------------------")
+            print(f"PAGE NUMBER: {page_num + 1}")
+            print("--------------------------------")
+            print(text[:1000])
+    
             print("\n========== CONTENTS PAGE FOUND ==========\n")
 
             chapter_pattern = (
