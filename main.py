@@ -398,14 +398,18 @@ async def ingest_book(
                 )
 
                 print(
-                    f"CHUNKS: "
-                    f"{len(chunks)}"
-                )
+                    f"CHUNKS FOUND: {len(chunks)} "
+                      f"ON PAGE {page_num + 1}"
+             )
 
-                for index, chunk in enumerate(
-                    chunks
-                ):
-
+                for index, chunk in enumerate(chunks):
+                    
+                    print(
+                        f"ADDING CHUNK "
+                        f"{index + 1} "
+                        f"FOR PAGE "
+                        f"{page_num + 1}"
+                     )
                     db.collection(
                         "chapter_chunks"
                     ).add({
@@ -424,8 +428,6 @@ async def ingest_book(
 
                         "chunkIndex":
                             index,
-
-                        "wordCount": len(chunk.split()),
 
                         "text":
                             chunk,
