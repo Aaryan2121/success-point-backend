@@ -229,12 +229,12 @@ async def ingest_book(
             page = doc[page_num]
             text = page.get_text()
 
-        if page_num < 20:
+            if page_num < 20:
 
-            print("\n====================")
-            print(f"PAGE {page_num + 1}")
-            print("====================")
-            print(text[:1500])
+                print("\n====================")
+                print(f"PAGE {page_num + 1}")
+                print("====================")
+                print(text[:1500])
     
             print("\n========== CONTENTS PAGE FOUND ==========\n")
 
